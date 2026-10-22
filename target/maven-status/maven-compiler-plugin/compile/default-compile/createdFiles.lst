@@ -1,0 +1,10 @@
+br/com/exemplo/avl/dto/ApiResponse.class
+br/com/exemplo/avl/service/SolicitacaoService.class
+br/com/exemplo/avl/controller/SolicitacaoController.class
+br/com/exemplo/avl/AvlApplication.class
+br/com/exemplo/avl/model/Solicitacao.class
+br/com/exemplo/avl/dto/AtualizarSolicitacaoRequest.class
+br/com/exemplo/avl/repository/ArvoreAVLRepository.class
+br/com/exemplo/avl/repository/SolicitacaoRepository.class
+br/com/exemplo/avl/model/NoAVL.class
+br/com/exemplo/avl/dto/SolicitacaoRequest.class

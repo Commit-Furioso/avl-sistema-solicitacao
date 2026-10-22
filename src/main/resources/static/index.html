@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Árvore AVL — Solicitações | Commit Furioso</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        .navbar-custom {
+            background-color: #1e293b;
+            color: #fff;
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .painel-arvore {
+            background-color: #1e293b; 
+            color: #f8fafc;
+            font-family: 'Courier New', Courier, monospace; 
+            padding: 20px;
+            border-radius: 8px;
+            min-height: 200px;
+            max-height: 350px;
+            overflow-y: auto;
+            white-space: pre; 
+            font-size: 0.95rem;
+            line-height: 1.8;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .arvore-texto { font-family: 'Inter', sans-serif; font-size: 0.9rem; }
+        .arvore-linha { color: #64748b; font-weight: bold; }
+
+        .table th { background-color: #f8fafc; font-weight: 600; }
+        .brand-subtitle { font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; color: #94a3b8; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-custom mb-4">
+        <div class="container-fluid flex-column align-items-start">
+            <h4 class="m-0 fw-bold">Árvore AVL — Sistema Commit Furioso</h4>
+            <span class="brand-subtitle mt-1">Estrutura de Dados • Painel de Controle</span>
+        </div>
+    </nav>
+
+    <div class="container-fluid px-4">
+        <div class="row">
+            <!-- Coluna Esquerda: Cadastro e Ações Rápidas -->
+            <div class="col-lg-4">
+                <div class="card p-4">
+                    <h5 class="fw-bold mb-4">Cadastrar nó na árvore</h5>
+                    <form id="formCadastro">
+                        <div class="mb-3">
+                            <label class="form-label text-secondary">Número (Chave AVL)</label>
+                            <input type="number" id="numero" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-secondary">Solicitante</label>
+                            <input type="text" id="solicitante" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-secondary">Descrição</label>
+                            <input type="text" id="descricao" class="form-control" required>
+                        </div>
+                        
+                        <!-- Painel de Botões -->
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary fw-bold">Inserir na AVL</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="carregarDadosExercicio()">Dados do Exercício</button>
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-outline-dark w-50" onclick="carregarDadosGrupo()">Equipe</button>
+                                <button type="button" class="btn btn-outline-dark w-50" onclick="carregarMaterias()">Matérias</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Coluna Direita: Visualização da AVL -->
+            <div class="col-lg-8">
+                <div class="card p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="fw-bold m-0">Representação Gráfica AVL</h5>
+                        <button class="btn btn-outline-primary btn-sm" onclick="atualizarArvore()">Sincronizar</button>
+                    </div>
+                    <p class="text-muted small mb-3">Nós e fatores de balanceamento formatados dinamicamente.</p>
+                    <div class="painel-arvore" id="arvoreVisualizacao">Carregando árvore...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção Inferior: Tabela -->
+        <div class="row mt-2">
+            <div class="col-12">
+                <div class="card p-4">
+                    <h5 class="fw-bold mb-3">Solicitações — Percurso Em Ordem</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Nº</th>
+                                    <th>Solicitante</th>
+                                    <th>Data de abertura</th>
+                                    <th>Descrição</th>
+                                    <th class="text-end">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelaSolicitacoes">
+                                <tr><td colspan="5" class="text-center py-3">Carregando...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edição -->
+    <div class="modal fade" id="modalEditar" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Alterar Solicitação</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditar">
+                        <div class="mb-3">
+                            <label class="form-label">Número (Imutável)</label>
+                            <input type="number" id="editNumero" class="form-control bg-light" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Solicitante</label>
+                            <input type="text" id="editSolicitante" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descrição</label>
+                            <input type="text" id="editDescricao" class="form-control" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="salvarEdicao()">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação de Exclusão -->
+    <div class="modal fade" id="modalRemover" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-body text-center p-4">
+                    <h5 class="mb-3 fw-bold text-danger">Confirmar Exclusão</h5>
+                    <p>Deseja realmente remover a solicitação <strong id="remocaoNumeroTxt"></strong>?</p>
+                    <div class="mt-4">
+                        <button type="button" class="btn btn-secondary btn-sm px-3 me-2" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger btn-sm px-4" onclick="confirmarRemocao()">Remover</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast de Notificação -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast align-items-center text-bg-dark border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="toastMessage"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let modalEdicao, modalRemocao, numeroParaRemover;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            modalEdicao = new bootstrap.Modal(document.getElementById('modalEditar'));
+            modalRemocao = new bootstrap.Modal(document.getElementById('modalRemover'));
+            carregarTudo();
+        });
+
+        function mostrarToast(mensagem) {
+            document.getElementById('toastMessage').innerText = mensagem;
+            new bootstrap.Toast(document.getElementById('liveToast')).show();
+        }
+
+        function formatarData(dataStr) {
+            if (!dataStr) return '';
+            const d = new Date(dataStr);
+            if (isNaN(d)) return dataStr;
+            return d.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
+        }
+
+        async function carregarTudo() {
+            await Promise.all([carregarSolicitacoes(), atualizarArvore()]);
+        }
+
+        async function carregarSolicitacoes() {
+            try {
+                const res = await fetch('/solicitacoes');
+                const dados = await res.json();
+                const tbody = document.getElementById('tabelaSolicitacoes');
+                
+                if (dados.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted">Nenhuma solicitação cadastrada.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = dados.map(s => `
+                    <tr>
+                        <td class="fw-bold">${s.numero}</td>
+                        <td>${s.solicitante}</td>
+                        <td class="text-muted">${formatarData(s.dataAbertura)}</td>
+                        <td>${s.descricao}</td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-outline-primary me-1" onclick="abrirEdicao(${s.numero}, '${s.solicitante}', '${s.descricao}')">Editar</button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="abrirModalRemocao(${s.numero})">Remover</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        async function atualizarArvore() {
+            const container = document.getElementById('arvoreVisualizacao');
+            try {
+                const res = await fetch('/solicitacoes/arvore');
+                let texto = await res.text();
+                
+                if (!texto || texto.trim() === "(árvore vazia)") {
+                    container.innerHTML = `<span class="text-muted">(árvore vazia)</span>`;
+                    return;
+                }
+
+                let htmlFormatado = texto
+                    .replace(/(│|├──|└──)/g, '<span class="arvore-linha">$1</span>')
+                    .replace(/<span class="arvore-linha">(├──|└──)<\/span> (\d+)/g, '<span class="arvore-linha">$1</span> <span class="badge bg-primary fs-6">$2</span>')
+                    .replace(/^(\d+) \[/gm, '<span class="badge bg-primary fs-6">$1</span> [')
+                    .replace(/\[FB=([^\]]+)\]/g, function(match, fb) {
+                        let cor = fb === '0' ? 'success' : (fb === '1' || fb === '-1' ? 'warning text-dark' : 'danger');
+                        return `<span class="badge bg-${cor} ms-2 me-2 arvore-texto">FB: ${fb}</span>`;
+                    });
+
+                container.innerHTML = htmlFormatado;
+            } catch (e) {
+                container.innerText = "Erro ao carregar árvore.";
+            }
+        }
+
+        document.getElementById('formCadastro').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const payload = {
+                numero: parseInt(document.getElementById('numero').value),
+                solicitante: document.getElementById('solicitante').value,
+                descricao: document.getElementById('descricao').value
+            };
+            await enviarRequisicao(payload, "Solicitação cadastrada com sucesso!");
+        });
+
+        async function enviarLote(lista, mensagemSucesso) {
+            for (let item of lista) {
+                await fetch('/solicitacoes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(item)
+                });
+            }
+            mostrarToast(mensagemSucesso);
+            document.getElementById('formCadastro').reset();
+            carregarTudo();
+        }
+
+        async function enviarRequisicao(payload, msg) {
+            const res = await fetch('/solicitacoes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const resultado = await res.json();
+            mostrarToast(resultado.mensagem || msg);
+            if (res.ok) {
+                document.getElementById('formCadastro').reset();
+                carregarTudo();
+            }
+        }
+
+        function carregarDadosExercicio() {
+            const exemplos = [
+                { numero: 50, solicitante: "Paulo Lima", descricao: "Problema no servidor" },
+                { numero: 30, solicitante: "Maria Silva", descricao: "Lentidão na rede" },
+                { numero: 70, solicitante: "João Souza", descricao: "Sistema fora do ar" }
+            ];
+            enviarLote(exemplos, "Dados do exercício original inseridos.");
+        }
+
+        function carregarDadosGrupo() {
+            const equipe = [
+                { numero: 50, solicitante: "Davi Sandro", descricao: "RA: 4393308" },
+                { numero: 30, solicitante: "Vitória Nunes", descricao: "RA: 45594872" },
+                { numero: 70, solicitante: "Nicolas Miranda", descricao: "RA: 41244109" }
+            ];
+            enviarLote(equipe, "Dados da equipe Commit Furioso carregados!");
+        }
+
+        function carregarMaterias() {
+            const materias = [
+                { numero: 200, solicitante: "Estruturas de Dados II", descricao: "PTA UCS - Vários Instrutores" },
+                { numero: 100, solicitante: "Engenharia de Software", descricao: "PTA UCS - Vários Instrutores" },
+                { numero: 300, solicitante: "Redes de Computadores", descricao: "Edidio Rubens Dantas Lima" },
+                { numero: 50, solicitante: "Análise e Projeto de Sist.", descricao: "PTA UCS - Vários Instrutores" },
+                { numero: 150, solicitante: "Banco de Dados", descricao: "Adriano Arrivabene" }
+            ];
+            enviarLote(materias, "Grade curricular do semestre carregada!");
+        }
+
+        function abrirEdicao(numero, solicitante, descricao) {
+            document.getElementById('editNumero').value = numero;
+            document.getElementById('editSolicitante').value = solicitante;
+            document.getElementById('editDescricao').value = descricao;
+            modalEdicao.show();
+        }
+
+        async function salvarEdicao() {
+            const numero = document.getElementById('editNumero').value;
+            const payload = {
+                solicitante: document.getElementById('editSolicitante').value,
+                descricao: document.getElementById('editDescricao').value
+            };
+
+            const res = await fetch(`/solicitacoes/${numero}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const resultado = await res.json();
+            mostrarToast(resultado.mensagem);
+
+            if (res.ok) {
+                modalEdicao.hide();
+                carregarTudo();
+            }
+        }
+
+        function abrirModalRemocao(numero) {
+            numeroParaRemover = numero;
+            document.getElementById('remocaoNumeroTxt').innerText = numero;
+            modalRemocao.show();
+        }
+
+        async function confirmarRemocao() {
+            const res = await fetch(`/solicitacoes/${numeroParaRemover}`, { method: 'DELETE' });
+            const resultado = await res.json();
+            mostrarToast(resultado.mensagem);
+            
+            modalRemocao.hide();
+            if (res.ok) carregarTudo();
+        }
+    </script>
+</body>
+</html>

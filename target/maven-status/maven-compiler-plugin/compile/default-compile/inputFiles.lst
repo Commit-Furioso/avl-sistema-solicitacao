@@ -1,0 +1,10 @@
+/workspaces/Aula---Estrutura-de-Dados/avl-sistema-solicitacao/src/main/java/br/com/exemplo/avl/AvlApplication.java
+/workspaces/Aula---Estrutura-de-Dados/avl-sistema-solicitacao/src/main/java/br/com/exemplo/avl/controller/SolicitacaoController.java
+/workspaces/Aula---Estrutura-de-Dados/avl-sistema-solicitacao/src/main/java/br/com/exemplo/avl/dto/ApiResponse.java
+/workspaces/Aula---Estrutura-de-Dados/avl-sistema-solicitacao/src/main/java/br/com/exemplo/avl/dto/AtualizarSolicitacaoRequest.java
+/workspaces/Aula---Estrutura-de-Dados/avl-sistema-solicitacao/src/main/java/br/com/exemplo/avl/dto/SolicitacaoRequest.java
+/workspaces/Aula---Estrutura-de-Dados/avl-sistema-solicitacao/src/main/java/br/com/exemplo/avl/model/NoAVL.java
+/workspaces/Aula---Estrutura-de-Dados/avl-sistema-solicitacao/src/main/java/br/com/exemplo/avl/model/Solicitacao.java
+/workspaces/Aula---Estrutura-de-Dados/avl-sistema-solicitacao/src/main/java/br/com/exemplo/avl/repository/ArvoreAVLRepository.java
+/workspaces/Aula---Estrutura-de-Dados/avl-sistema-solicitacao/src/main/java/br/com/exemplo/avl/repository/SolicitacaoRepository.java
+/workspaces/Aula---Estrutura-de-Dados/avl-sistema-solicitacao/src/main/java/br/com/exemplo/avl/service/SolicitacaoService.java
