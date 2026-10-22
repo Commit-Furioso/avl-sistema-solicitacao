@@ -53,3 +53,24 @@ body {
     text-transform: uppercase; 
     color: #94a3b8; 
 }
+/* Garante o scroll horizontal suave na árvore em qualquer tela */
+.painel-arvore {
+    overflow-x: auto;
+}
+
+/* Ajustes específicos para Celulares (telas menores que 768px) */
+@media (max-width: 768px) {
+    .painel-arvore {
+        font-size: 0.75rem; /* Reduz a fonte da árvore para caber mais galhos */
+        padding: 10px;
+    }
+    
+    .table {
+        font-size: 0.85rem; /* Reduz levemente a fonte da tabela */
+    }
+    
+    .btn-sm {
+        font-size: 0.75rem; /* Ajusta os botões de ação da tabela */
+        padding: 0.2rem 0.4rem;
+    }
+}
