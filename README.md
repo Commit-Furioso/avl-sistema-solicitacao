@@ -1,9 +1,35 @@
-# 🚀 Sistema de Solicitações — Árvore AVL
+# 🌳 Sistema de Solicitações — Árvore AVL
+
+[![Status](https://img.shields.io/badge/Status-Online-success?style=for-the-badge&color=E14017)](https://avl-sistema-solicitacao.onrender.com/)
+[![Java](https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)]()
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring&logoColor=white)]()
+
+> **🌐 Aceda à aplicação online:** [avl-sistema-solicitacao.onrender.com](https://avl-sistema-solicitacao.onrender.com/)
+
+Este projeto é uma aplicação web desenvolvida para a disciplina de Estruturas de Dados. Implementa uma **Árvore AVL** (Adelson-Velsky e Landis) no backend para o armazenamento, balanceamento dinâmico e gestão de solicitações de uma organização.
+
+## 🚀 Funcionalidades
+
+*   **Inserção Dinâmica:** Registo de novas solicitações com chave única, nome do solicitante e descrição.
+*   **Auto-balanceamento:** O motor Java recalcula os Fatores de Balanceamento (FB) e executa rotações (LL, RR, LR, RL) automaticamente a cada inserção.
+*   **Visualização em Tempo Real:** Interface gráfica responsiva (Dark Mode) que renderiza a estrutura de diretórios da árvore com as cores dos nós baseadas no seu Fator de Balanceamento.
+*   **Percurso Em Ordem:** Listagem tabular e em tempo real de todos os nós ordenados pela chave (Nº da Solicitação).
+
+## 🛠️ Tecnologias Utilizadas
+
+*   **Backend:** Java 17, Spring Boot, Maven
+*   **Frontend:** HTML5, CSS3 (Custom Dark Theme "Commit Furioso"), JavaScript, Bootstrap 5
+*   **Deploy:** Render (Docker)
+
+## 💻 Equipa: Commit Furioso
+*   Davi Sandro
+*   Nicolas Miranda
+*   Vitória Nunes
+---
+*Projeto académico desenvolvido em outubro de 2026.*
 
 **Equipe:** Commit Furioso  
 *Onde todo problema vira projeto.*
-
-Este projeto implementa um sistema de gestão de solicitações em Java utilizando a estrutura de dados **Árvore AVL**. O sistema conta com um front-end moderno (HTML/JS/Bootstrap) integrado via API REST a um back-end Spring Boot, garantindo o armazenamento, balanceamento automático e a busca eficiente dos chamados.
 
 ## 🎨 Identidade Visual
 O design da interface foi elaborado seguindo a identidade **Commit Furioso**:
